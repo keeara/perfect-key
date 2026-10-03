@@ -158,7 +158,7 @@ private constructor(val themeId: Int, @JvmField val mStyleId: Int) {
                     "#007AFF".toColorInt(), // blue: accent / return key
                     "#D3D5DA".toColorInt(), // panel
                     Color.WHITE, // letter keys
-                    "#C3C7CE".toColorInt(), // functional keys
+                    "#B7BCC6".toColorInt(), // functional keys, clearly darker than the panel
                     Color.WHITE, // space bar
                     Color.BLACK,
                     "#6C6C70".toColorInt(),

@@ -13,10 +13,12 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Shader;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -102,6 +104,11 @@ public class KeyboardView extends View {
     private final Paint mRimPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF mRimRect = new RectF();
     private static final int[] RIM_ALPHAS = {58, 46, 35, 25, 17, 10, 4};
+    private static final int[] LIGHT_EDGE_ALPHAS = {70, 54, 40, 29, 20, 13, 8, 5};
+    // light keys: instead of a lit top edge they get a soft shadow below, a hairline outline and a slightly lifted lower half
+    private final boolean mLightKeys;
+    private final Paint mLiftPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private int mLiftShaderHeight = -1;
     private final Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();
 
     public KeyboardView(final Context context, final AttributeSet attrs) {
@@ -111,6 +118,7 @@ public class KeyboardView extends View {
     public KeyboardView(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
         mColors = Settings.getValues().mColors;
+        mLightKeys = com.perfectkey.keyboard.latin.utils.ColorUtilKt.isBrightColor(mColors.get(ColorType.KEY_BACKGROUND));
 
         final TypedArray keyboardViewAttr = context.obtainStyledAttributes(attrs,
                 R.styleable.KeyboardView, defStyle, R.style.KeyboardView);
@@ -378,17 +386,74 @@ public class KeyboardView extends View {
         final int inset = this instanceof PopupKeysKeyboardView ? Math.round(3 * getResources().getDisplayMetrics().density) : 0;
         background.setBounds(inset, inset, bgWidth - inset, bgHeight - inset);
         canvas.translate(bgX, bgY);
+        if (mLightKeys) drawKeyShadow(key, canvas, bgWidth, bgHeight);
         background.draw(canvas);
         drawKeyRimLight(key, canvas, bgWidth, bgHeight);
         canvas.translate(-bgX, -bgY);
     }
 
-    private void drawKeyRimLight(@NonNull final Key key, @NonNull final Canvas canvas, final int width, final int height) {
+    /** Whether the key has its own background that gets edge effects (not the keys inside the long-press pill and more-suggestions panel). */
+    private boolean hasEdgeEffects(@NonNull final Key key, final int width, final int height) {
+        if (key.getBackgroundType() == Key.BACKGROUND_TYPE_EMPTY) return false;
+        if (this instanceof PopupKeysKeyboardView || this instanceof com.perfectkey.keyboard.latin.suggestions.MoreSuggestionsView) return false;
+        return !key.isPressed() && width >= 20 && height >= 20;
+    }
+
+    /** Soft shadow under light keys, so they stand out from the panel. */
+    private void drawKeyShadow(@NonNull final Key key, @NonNull final Canvas canvas, final int width, final int height) {
+        if (!hasEdgeEffects(key, width, height)) return;
+        final float density = getResources().getDisplayMetrics().density;
+        final float radius = 10 * density;
+        mRimPaint.setStyle(Paint.Style.FILL);
+        mRimPaint.setColor(0xFF1B2030);
+        // a wide faint layer and a tight darker one, which reads as a soft shadow without blurring
+        mRimPaint.setAlpha(14);
+        mRimRect.set(-0.5f * density, 0.5f * density, width + 0.5f * density, height + 2.2f * density);
+        canvas.drawRoundRect(mRimRect, radius, radius, mRimPaint);
+        mRimPaint.setAlpha(30);
+        mRimRect.set(0, 0.6f * density, width, height + 1.1f * density);
+        canvas.drawRoundRect(mRimRect, radius, radius, mRimPaint);
+    }
+
+    /** Light keys: the darkening of the gradient is softened and a hairline outline defines the edge. */
+    private void drawLightKeyEdges(@NonNull final Key key, @NonNull final Canvas canvas, final int width, final int height) {
+        final float density = getResources().getDisplayMetrics().density;
+        final float radius = 10 * density;
         final int type = key.getBackgroundType();
-        if (type == Key.BACKGROUND_TYPE_EMPTY) return;
-        // the keys of the long-press pill and of the more-suggestions panel have no own background, no edges to light
-        if (this instanceof PopupKeysKeyboardView || this instanceof com.perfectkey.keyboard.latin.suggestions.MoreSuggestionsView) return;
-        if (key.isPressed() || width < 20 || height < 20) return;
+        if (type == Key.BACKGROUND_TYPE_NORMAL || type == Key.BACKGROUND_TYPE_SPACEBAR || type == Key.BACKGROUND_TYPE_FUNCTIONAL) {
+            if (mLiftShaderHeight != height) {
+                mLiftPaint.setShader(new LinearGradient(0, height * 0.35f, 0, height, 0x00FFFFFF, 0x99FFFFFF, Shader.TileMode.CLAMP));
+                mLiftShaderHeight = height;
+            }
+            mLiftPaint.setAlpha(type == Key.BACKGROUND_TYPE_FUNCTIONAL ? 0x70 : 0xFF); // the darker grey keys need less lifting
+            mRimRect.set(0, 0, width, height);
+            canvas.drawRoundRect(mRimRect, radius, radius, mLiftPaint);
+        }
+        // the mirror image of the lit top edge of dark keys: a dark edge, strongest at the bottom and fading upwards
+        final float stroke = Math.max(1f, density);
+        mRimPaint.setStyle(Paint.Style.STROKE);
+        mRimPaint.setStrokeWidth(stroke);
+        mRimPaint.setColor(0xFF1B2030);
+        mRimRect.set(stroke / 2, stroke / 2, width - stroke / 2, height - stroke / 2);
+        final float edgeRadius = radius - stroke / 2;
+        mRimPaint.setAlpha(16); // faint all around, so the top edge is defined too
+        canvas.drawRoundRect(mRimRect, edgeRadius, edgeRadius, mRimPaint);
+        final float band = height * 0.08f;
+        for (int i = 0; i < LIGHT_EDGE_ALPHAS.length; i++) {
+            mRimPaint.setAlpha(LIGHT_EDGE_ALPHAS[i]);
+            canvas.save();
+            canvas.clipRect(0, height - (i + 1) * band, width, height - i * band);
+            canvas.drawRoundRect(mRimRect, edgeRadius, edgeRadius, mRimPaint);
+            canvas.restore();
+        }
+    }
+
+    private void drawKeyRimLight(@NonNull final Key key, @NonNull final Canvas canvas, final int width, final int height) {
+        if (!hasEdgeEffects(key, width, height)) return;
+        if (mLightKeys) {
+            drawLightKeyEdges(key, canvas, width, height);
+            return;
+        }
         final float density = getResources().getDisplayMetrics().density;
         final float stroke = Math.max(1f, density);
         mRimPaint.setStyle(Paint.Style.STROKE);

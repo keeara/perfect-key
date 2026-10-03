@@ -9,6 +9,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
+import com.perfectkey.keyboard.settings.screens.AppearanceMode
+import androidx.compose.runtime.SideEffect
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.activity.SystemBarStyle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
@@ -89,7 +93,19 @@ open class SettingsActivity : ComponentActivity(), SharedPreferences.OnSharedPre
         val cv = ComposeView(context = this)
         setContentView(cv)
         cv.setContent {
-            Theme {
+            // the settings follow the same light/dark choice as the keyboard (Appearance), not only the phone
+            val prefChangedCount by prefChanged.collectAsState() // recompose when the choice changes
+            val dark = when (AppearanceMode.current(prefs())) {
+                AppearanceMode.System -> isSystemInDarkTheme()
+                AppearanceMode.Light -> false
+                AppearanceMode.Dark -> true
+            }
+            SideEffect {
+                val transparent = android.graphics.Color.TRANSPARENT
+                val style = if (dark) SystemBarStyle.dark(transparent) else SystemBarStyle.light(transparent, transparent)
+                this@SettingsActivity.enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+            }
+            Theme(dark) {
                 Surface {
                     val dictUri by dictUriFlow.collectAsState()
                     val crashReports by crashReportFiles.collectAsState()
