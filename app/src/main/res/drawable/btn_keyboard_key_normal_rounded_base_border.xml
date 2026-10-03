@@ -6,9 +6,12 @@
             <corners android:radius="10dp" />
         </shape>
     </item>
-    <item android:bottom="1dp">
+    <!-- white to light grey: the key color is multiplied on top, so the lower part of the key gets about 9% darker -->
+    <item android:bottom="0dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/key_background_normal_lxx_base_border" />
+            <gradient android:angle="270"
+                android:startColor="#FFFFFF"
+                android:endColor="#E0E0E0" />
             <corners android:radius="10dp" />
         </shape>
     </item>

@@ -5,7 +5,7 @@
     SPDX-License-Identifier: Apache-2.0 AND GPL-3.0-only
 -->
 
-<helium314.keyboard.keyboard.emoji.EmojiPalettesView
+<com.perfectkey.keyboard.keyboard.emoji.EmojiPalettesView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,17 +15,57 @@
     android:background="@android:color/transparent"
     style="?attr/emojiPalettesViewStyle"
 >
+    <!-- search field above the emoji grid; tapping it opens the emoji search -->
+    <LinearLayout
+        android:id="@+id/emoji_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:focusable="true">
+        <ImageView
+            android:id="@+id/emoji_search_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ks_search"
+            android:importantForAccessibility="no" />
+        <TextView
+            android:id="@+id/emoji_search_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/emoji_search_title"
+            android:textSize="16sp" />
+    </LinearLayout>
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/emoji_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <helium314.keyboard.keyboard.emoji.EmojiCategoryPageIndicatorView
+    <com.perfectkey.keyboard.keyboard.emoji.EmojiCategoryPageIndicatorView
         android:id="@+id/emoji_category_page_id_view"
         android:layout_width="match_parent"
         android:layout_height="2dip" />
-    <helium314.keyboard.keyboard.MainKeyboardView
-        android:id="@+id/bottom_row_keyboard"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <com.perfectkey.keyboard.keyboard.MainKeyboardView
+            android:id="@+id/bottom_row_keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <!-- category icons sit between the ABC and delete keys -->
+        <LinearLayout
+            android:id="@+id/emoji_tab_strip"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="52dp" />
+    </FrameLayout>
 
-</helium314.keyboard.keyboard.emoji.EmojiPalettesView>
+</com.perfectkey.keyboard.keyboard.emoji.EmojiPalettesView>

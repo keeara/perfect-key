@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<resources>
+    <!-- landscape: taller keys with tighter gaps, so the keyboard leaves room for the app -->
+    <dimen name="key_vertical_gap">7dp</dimen>
+    <dimen name="keyboard_top_air">8dp</dimen>
+    <dimen name="keyboard_top_air_number">6dp</dimen>
+</resources>

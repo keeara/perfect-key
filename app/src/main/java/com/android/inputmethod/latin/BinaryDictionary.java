@@ -7,27 +7,27 @@
 package com.android.inputmethod.latin;
 
 import android.text.TextUtils;
-import helium314.keyboard.latin.utils.ChecksumCalculator;
-import helium314.keyboard.latin.utils.Log;
+import com.perfectkey.keyboard.latin.utils.ChecksumCalculator;
+import com.perfectkey.keyboard.latin.utils.Log;
 import android.util.SparseArray;
 
 import androidx.annotation.NonNull;
 
-import helium314.keyboard.latin.dictionary.Dictionary;
-import helium314.keyboard.latin.NgramContext;
-import helium314.keyboard.latin.SuggestedWords.SuggestedWordInfo;
-import helium314.keyboard.latin.common.ComposedData;
-import helium314.keyboard.latin.common.Constants;
-import helium314.keyboard.latin.common.FileUtils;
-import helium314.keyboard.latin.common.InputPointers;
-import helium314.keyboard.latin.common.StringUtils;
-import helium314.keyboard.latin.makedict.DictionaryHeader;
-import helium314.keyboard.latin.makedict.FormatSpec.DictionaryOptions;
-import helium314.keyboard.latin.makedict.UnsupportedFormatException;
-import helium314.keyboard.latin.makedict.WordProperty;
-import helium314.keyboard.latin.settings.SettingsValuesForSuggestion;
+import com.perfectkey.keyboard.latin.dictionary.Dictionary;
+import com.perfectkey.keyboard.latin.NgramContext;
+import com.perfectkey.keyboard.latin.SuggestedWords.SuggestedWordInfo;
+import com.perfectkey.keyboard.latin.common.ComposedData;
+import com.perfectkey.keyboard.latin.common.Constants;
+import com.perfectkey.keyboard.latin.common.FileUtils;
+import com.perfectkey.keyboard.latin.common.InputPointers;
+import com.perfectkey.keyboard.latin.common.StringUtils;
+import com.perfectkey.keyboard.latin.makedict.DictionaryHeader;
+import com.perfectkey.keyboard.latin.makedict.FormatSpec.DictionaryOptions;
+import com.perfectkey.keyboard.latin.makedict.UnsupportedFormatException;
+import com.perfectkey.keyboard.latin.makedict.WordProperty;
+import com.perfectkey.keyboard.latin.settings.SettingsValuesForSuggestion;
 import com.android.inputmethod.latin.utils.BinaryDictionaryUtils;
-import helium314.keyboard.latin.utils.JniUtils;
+import com.perfectkey.keyboard.latin.utils.JniUtils;
 import com.android.inputmethod.latin.utils.WordInputEventForPersonalization;
 
 import java.io.File;

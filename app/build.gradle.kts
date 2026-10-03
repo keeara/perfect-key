@@ -10,7 +10,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "helium314.keyboard"
+        applicationId = "com.perfectkey.keyboard"
         minSdk = 21
         targetSdk = 37
         versionCode = 4101
@@ -66,7 +66,7 @@ android {
             }
             variant.outputs.forEach { output ->
                 if (output is com.android.build.api.variant.impl.VariantOutputImpl) {
-                    output.outputFileName = "HeliBoard_${defaultConfig.versionName}-${variant.buildType}.apk"
+                    output.outputFileName = "PerfectKey_${defaultConfig.versionName}-${variant.buildType}.apk"
                 }
             }
         }
@@ -103,13 +103,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    // see https://github.com/HeliBorg/HeliBoard/issues/477
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
     }
 
-    namespace = "helium314.keyboard.latin"
+    namespace = "com.perfectkey.keyboard.latin"
     lint {
         abortOnError = true
     }

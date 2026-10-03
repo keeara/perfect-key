@@ -11,8 +11,9 @@
 
     <!-- Preferable keyboard height in absolute scale: 1.100in -->
     <!-- This config_default_keyboard_height value should match with keyboard-heights.xml -->
-    <dimen name="config_default_keyboard_height">176.0dp</dimen>
-    <fraction name="config_min_keyboard_height">45%p</fraction>
+    <!-- 4 rows of 37dp keys on a 44dp pitch: 4 * 44 - 7 -->
+    <dimen name="config_default_keyboard_height">169dp</dimen>
+    <fraction name="config_min_keyboard_height">35%p</fraction>
 
     <!-- key_height + key_bottom_gap = config_popup_keys_keyboard_key_height -->
     <dimen name="config_popup_keys_keyboard_key_height">44.8dp</dimen>
@@ -57,7 +58,7 @@
 
     <!-- Emoji keyboard -->
     <fraction name="config_emoji_keyboard_key_width">8.33%p</fraction>
-    <fraction name="config_emoji_keyboard_row_height">41%p</fraction>
+    <fraction name="config_emoji_keyboard_row_height">36%p</fraction>
     <fraction name="config_emoji_keyboard_key_letter_size">78%p</fraction>
     <fraction name="config_emoji_keyboard_key_label_size">78%p</fraction>
     <integer name="config_emoji_keyboard_max_recents_key_count">32</integer>

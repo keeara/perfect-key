@@ -11,7 +11,7 @@
 
         <item name="android:statusBarColor">@color/action_bar_color</item>
         <item name="android:navigationBarColor">@color/navigation_bar_color</item>
-        <item name="android:colorBackground">@color/setup_background</item>
+        <item name="android:colorBackground">@color/window_background</item>
         <item name="android:colorForeground">@color/foreground</item>
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
     </style>

@@ -48,15 +48,11 @@
     <!-- Color resources for LXX_Base_Border theme. -->
     <color name="keyboard_background_lxx_base_border">@android:color/white</color>
     <color name="key_background_normal_lxx_base_border">@android:color/white</color>
-    <color name="key_bottom_bevel_lxx_base">#A9ABAD</color>
+    <color name="key_bottom_bevel_lxx_base">#00000000</color> <!-- keys are flat, no bottom edge -->
     <color name="emoji_tab_page_indicator_background_lxx_base_border">@android:color/white</color>
 
     <!-- Color resources for setup wizard, tutorial and settings -->
     <color name="accent">@color/highlight_color_lxx_light</color>
-    <color name="setup_background">#FFFAFAFA</color>
-    <color name="setup_step_background">#FFD1E3FA</color>
-    <color name="setup_text_title">#FF1767CF</color>
-    <color name="setup_text_action">#FF1767CF</color>
     <color name="action_bar_color">#FFF5F5F5</color>
     <color name="navigation_bar_color">#B3888888</color>
 
@@ -73,4 +69,5 @@
 
     <!-- Scrollbar color -->
     <color name="toolbar_scrollbar">#66808080</color>
+    <color name="window_background">#FFF2F2F7</color>
 </resources>

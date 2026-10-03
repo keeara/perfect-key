@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-only -->
+<resources>
+    <!-- gap between key rows on letter and symbol pages -->
+    <dimen name="key_vertical_gap">11dp</dimen>
+    <!-- air above the first row when there is no prediction bar -->
+    <dimen name="keyboard_top_air">24dp</dimen>
+    <!-- same, on the number and phone pads -->
+    <dimen name="keyboard_top_air_number">10dp</dimen>
+</resources>
