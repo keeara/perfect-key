@@ -3,6 +3,11 @@
 Perfect Key is a customizable, offline, open-source keyboard for Android with a minimal, clean look.
 It does not use the internet permission, so it is 100% offline.
 
+<p align="center">
+  <img src="screenshots/keyboard-light.png" alt="Perfect Key, light theme" width="45%">
+  <img src="screenshots/keyboard-dark.png" alt="Perfect Key, dark theme" width="45%">
+</p>
+
 ## Features
 
 - Clean, rounded keys with soft lighting and a compact key preview
@@ -18,10 +23,12 @@ It does not use the internet permission, so it is 100% offline.
 ## Building
 
 ```
-./gradlew assembleDebug
+./gradlew assembleRelease
 ```
 
-The APK is written to `app/build/outputs/apk/debug/`. You need the Android SDK (see `local.properties`) and a JDK.
+The APK is written to `app/build/outputs/apk/release/`. You need the Android SDK (see `local.properties`) and a JDK.
+The release APK is signed with the key named in `~/.android/perfectkey-release.properties` (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`);
+without that file the build produces an unsigned APK.
 
 ## License
 

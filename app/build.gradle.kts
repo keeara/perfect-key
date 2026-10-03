@@ -1,3 +1,4 @@
+import java.util.Properties
 import com.android.build.api.variant.ApplicationVariant
 
 plugins {
@@ -6,6 +7,11 @@ plugins {
     kotlin("plugin.compose") version "2.4.0"
 }
 
+// release key: ~/.android/perfectkey-release.properties (outside the repo), or the file named by PERFECTKEY_KEYSTORE_PROPERTIES
+val keystoreProps = Properties().apply {
+    val f = file(System.getenv("PERFECTKEY_KEYSTORE_PROPERTIES") ?: "${System.getProperty("user.home")}/.android/perfectkey-release.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
 android {
     compileSdk = 37
 
@@ -13,8 +19,8 @@ android {
         applicationId = "com.perfectkey.keyboard"
         minSdk = 21
         targetSdk = 37
-        versionCode = 4101
-        versionName = "4.1"
+        versionCode = 11
+        versionName = "1.1"
         ndk {
             abiFilters.clear()
             abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
@@ -22,8 +28,18 @@ android {
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
 
+    signingConfigs {
+        if (keystoreProps.containsKey("storeFile")) create("perfectkeyRelease") {
+            storeFile = file(keystoreProps.getProperty("storeFile"))
+            storePassword = keystoreProps.getProperty("storePassword")
+            keyAlias = keystoreProps.getProperty("keyAlias")
+            keyPassword = keystoreProps.getProperty("keyPassword")
+        }
+    }
+
     buildTypes {
         release {
+            signingConfigs.findByName("perfectkeyRelease")?.let { signingConfig = it }
             isMinifyEnabled = true
             isShrinkResources = false
             isDebuggable = false

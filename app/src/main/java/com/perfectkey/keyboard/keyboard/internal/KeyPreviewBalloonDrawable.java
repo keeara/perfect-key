@@ -77,7 +77,7 @@ public final class KeyPreviewBalloonDrawable extends Drawable {
             mPaint.setStyle(Paint.Style.FILL);
             mPaint.setColor(ColorUtils.blendARGB(base, Color.WHITE, 0.14f));
             canvas.drawPath(mPath, mPaint);
-            // thin lighter edge, like the keys; light keys get a darker hairline instead, stronger towards the bottom, so the bubble lifts off the panel
+            // thin edge, like the keys; mirrored to a dark hairline on light keys
             final boolean light = com.perfectkey.keyboard.latin.utils.ColorUtilKt.isBrightColor(base);
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setStrokeWidth(mCompactStroke);
@@ -86,14 +86,6 @@ public final class KeyPreviewBalloonDrawable extends Drawable {
             mPath.rewind();
             mPath.addRoundRect(mArc, cr - mCompactStroke / 2, cr - mCompactStroke / 2, Path.Direction.CW);
             canvas.drawPath(mPath, mPaint);
-            if (light) {
-                canvas.save();
-                canvas.clipRect(0, h * 0.55f, w, h);
-                mPaint.setStrokeWidth(mCompactStroke * 1.6f);
-                mPaint.setColor(0x301B2030);
-                canvas.drawPath(mPath, mPaint);
-                canvas.restore();
-            }
             mPaint.setStyle(Paint.Style.FILL);
             return;
         }

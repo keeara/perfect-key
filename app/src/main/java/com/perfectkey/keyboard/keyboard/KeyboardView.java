@@ -407,11 +407,11 @@ public class KeyboardView extends View {
         mRimPaint.setStyle(Paint.Style.FILL);
         mRimPaint.setColor(0xFF1B2030);
         // a wide faint layer and a tight darker one, which reads as a soft shadow without blurring
-        mRimPaint.setAlpha(14);
-        mRimRect.set(-0.5f * density, 0.5f * density, width + 0.5f * density, height + 2.2f * density);
+        mRimPaint.setAlpha(22);
+        mRimRect.set(-0.7f * density, 0.5f * density, width + 0.7f * density, height + 3.2f * density);
         canvas.drawRoundRect(mRimRect, radius, radius, mRimPaint);
-        mRimPaint.setAlpha(30);
-        mRimRect.set(0, 0.6f * density, width, height + 1.1f * density);
+        mRimPaint.setAlpha(48);
+        mRimRect.set(0, 0.6f * density, width, height + 1.5f * density);
         canvas.drawRoundRect(mRimRect, radius, radius, mRimPaint);
     }
 
@@ -443,6 +443,15 @@ public class KeyboardView extends View {
             mRimPaint.setAlpha(LIGHT_EDGE_ALPHAS[i]);
             canvas.save();
             canvas.clipRect(0, height - (i + 1) * band, width, height - i * band);
+            canvas.drawRoundRect(mRimRect, edgeRadius, edgeRadius, mRimPaint);
+            canvas.restore();
+        }
+        // the mirrored top edge of the dark keys: a dark line along the upper part, fading downwards
+        final float topBand = height * 0.08f;
+        for (int i = 0; i < RIM_ALPHAS.length; i++) {
+            mRimPaint.setAlpha(RIM_ALPHAS[i] * 2 / 3);
+            canvas.save();
+            canvas.clipRect(0, i * topBand, width, (i + 1) * topBand);
             canvas.drawRoundRect(mRimRect, edgeRadius, edgeRadius, mRimPaint);
             canvas.restore();
         }

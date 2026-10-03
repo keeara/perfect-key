@@ -28,7 +28,11 @@ public final class PanelTopLightDrawable extends Drawable {
     private final Paint mGlowPaint = new Paint();
     private final Path mPath = new Path();
 
-    public PanelTopLightDrawable(final float radiusPx, final float density) {
+    private final int mTint;
+
+    /** [lightPanel]: mirrored for a light panel, a dark line instead of a white one */
+    public PanelTopLightDrawable(final float radiusPx, final float density, final boolean lightPanel) {
+        mTint = lightPanel ? 0x1B2030 : 0xFFFFFF;
         mRadius = radiusPx;
         mDensity = density;
         mRimPaint.setStyle(Paint.Style.STROKE);
@@ -40,9 +44,9 @@ public final class PanelTopLightDrawable extends Drawable {
     protected void onBoundsChange(@NonNull final Rect bounds) {
         mPath.set(SquircleUtils.topRoundedPath(bounds.width(), bounds.height() + mRadius, mRadius, 0.7f));
         mRimPaint.setShader(new LinearGradient(0, 0, 0, 56 * mDensity,
-                new int[] {0x4DFFFFFF, 0x1AFFFFFF, 0x00FFFFFF}, new float[] {0f, 0.35f, 1f}, Shader.TileMode.CLAMP));
+                new int[] {0x4D000000 | mTint, 0x1A000000 | mTint, mTint}, new float[] {0f, 0.35f, 1f}, Shader.TileMode.CLAMP));
         mGlowPaint.setShader(new LinearGradient(0, 0, 0, 90 * mDensity,
-                new int[] {0x0FFFFFFF, 0x00FFFFFF}, null, Shader.TileMode.CLAMP));
+                new int[] {0x0F000000 | mTint, mTint}, null, Shader.TileMode.CLAMP));
     }
 
     @Override

@@ -140,7 +140,8 @@ public final class InputView extends FrameLayout {
         keyboardFrame.setClipToOutline(true);
         // soft light along the top edge of the panel, like on the keys
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
-            keyboardFrame.setForeground(new com.perfectkey.keyboard.latin.utils.PanelTopLightDrawable(radius, getResources().getDisplayMetrics().density));
+            keyboardFrame.setForeground(new com.perfectkey.keyboard.latin.utils.PanelTopLightDrawable(radius, getResources().getDisplayMetrics().density,
+                    com.perfectkey.keyboard.latin.utils.ColorUtilKt.isBrightColor(Settings.getValues().mColors.get(ColorType.MAIN_BACKGROUND))));
 
         // Work around inset application being unreliable
         requestApplyInsets();
