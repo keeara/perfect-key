@@ -35,6 +35,8 @@ public final class AudioAndHapticFeedbackManager {
     private VibrationEffect mLongPressEffect;
     private VibrationEffect mGestureMoveEffect;
     private static final float KEY_PRESS_STRENGTH = 1.0f;
+    // soft CLICK layered on the TICK gives the key press more body without making it harsher
+    private static final float KEY_PRESS_BODY_STRENGTH = 0.28f;
     private static final float KEY_REPEAT_STRENGTH = 0.7f;
     private static final float LONG_PRESS_STRENGTH = 1.0f;
     private static final float GESTURE_MOVE_STRENGTH = 0.6f;
@@ -72,7 +74,7 @@ public final class AudioAndHapticFeedbackManager {
         // a crisp tick followed right away by a low tick gives the tap some body without getting buzzy
         mKeyPressEffect = VibrationEffect.startComposition()
                 .addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, KEY_PRESS_STRENGTH)
-                .addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, 0.5f, 0).compose();
+                .addPrimitive(VibrationEffect.Composition.PRIMITIVE_CLICK, KEY_PRESS_BODY_STRENGTH, 0).compose();
         mKeyRepeatEffect = VibrationEffect.startComposition()
                 .addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, KEY_REPEAT_STRENGTH).compose();
         mLongPressEffect = VibrationEffect.startComposition()

@@ -26,39 +26,45 @@
       "width": 0.125
     },
     {
-      "$": "keyboard_state_selector",
-      "languageKeyEnabled": {
-        "$": "keyboard_state_selector",
-        "alphabet": {
-          "label": "language_switch"
-        }
-      }
-    },
-    {
       "label": "emoji",
       "width": 0.125
+    },
+    {
+      "$": "variation_selector",
+      "default": {
+        "label": "comma",
+        "labelFlags": 1073741824,
+        "width": 0.09
+      },
+      "email": {
+        "label": "@",
+        "labelFlags": 1073741824,
+        "groupId": 1,
+        "type": "function",
+        "width": 0.09
+      },
+      "uri": {
+        "label": "/",
+        "labelFlags": 1073741824,
+        "groupId": 1,
+        "type": "function",
+        "width": 0.09
+      }
     },
     {
       "label": "space"
     },
     {
-      "$": "keyboard_state_selector",
-      "alphabet": {
-        "$": "variation_selector",
-        "email": { "label": "@", "labelFlags": 1073741824, "width": 0.1 }
-      }
-    },
-    {
-      "$": "keyboard_state_selector",
-      "alphabet": {
-        "$": "variation_selector",
-        "email": { "label": "period", "labelFlags": 1073741824, "width": 0.1 },
-        "uri": { "label": "period", "labelFlags": 1073741824, "width": 0.1 }
+      "$": "variation_selector",
+      "default": {
+        "label": "period",
+        "labelFlags": 1073741824,
+        "width": 0.09
       }
     },
     {
       "label": "action",
-      "width": 0.25,
+      "width": 0.2,
       "labelFlags": 1073741824
     }
   ]
