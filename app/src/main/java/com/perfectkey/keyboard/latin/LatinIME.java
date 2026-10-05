@@ -68,6 +68,8 @@ import com.perfectkey.keyboard.latin.personalization.PersonalizationHelper;
 import com.perfectkey.keyboard.latin.settings.Settings;
 import com.perfectkey.keyboard.latin.settings.SettingsSubtype;
 import com.perfectkey.keyboard.latin.settings.SettingsValues;
+import com.perfectkey.keyboard.latin.smscode.SmsCodeStore;
+import com.perfectkey.keyboard.latin.smscode.SmsCodePill;
 import com.perfectkey.keyboard.latin.suggestions.SuggestionStripView;
 import com.perfectkey.keyboard.latin.suggestions.SuggestionStripViewAccessor;
 import com.perfectkey.keyboard.latin.touchinputconsumer.GestureConsumer;
@@ -191,6 +193,7 @@ public class LatinIME extends InputMethodService implements
 
     private GestureConsumer mGestureConsumer = GestureConsumer.NULL_GESTURE_CONSUMER;
 
+    private final SmsCodePill mSmsCodePill = new SmsCodePill(this);
     private final ClipboardHistoryManager mClipboardHistoryManager = new ClipboardHistoryManager(this);
 
     public static final class UIHandler extends LeakGuardHandlerWrapper<LatinIME> {
@@ -555,6 +558,10 @@ public class LatinIME extends InputMethodService implements
 
         loadSettings();
         mClipboardHistoryManager.onCreate();
+        SmsCodeStore.INSTANCE.setOnNewCode(() -> {
+            if (isInputViewShown()) mSmsCodePill.update(mKeyboardSwitcher.getWrapperView());
+            return kotlin.Unit.INSTANCE;
+        });
         mHandler.onCreate();
         if (FoldableUtils.INSTANCE.isFoldable())
             foldableObserver = new FoldableUtils.FoldableObserver(this);
@@ -702,6 +709,8 @@ public class LatinIME extends InputMethodService implements
     @Override
     public void onDestroy() {
         mClipboardHistoryManager.onDestroy();
+        SmsCodeStore.INSTANCE.setOnNewCode(null);
+        mSmsCodePill.dismiss();
         mDictionaryFacilitator.closeDictionaries();
         mSettings.onDestroy();
         if (foldableObserver != null)
@@ -864,6 +873,7 @@ public class LatinIME extends InputMethodService implements
 
     void onStartInputViewInternal(final EditorInfo editorInfo, final boolean restarting) {
         super.onStartInputView(editorInfo, restarting);
+        mSmsCodePill.update(mKeyboardSwitcher.getWrapperView());
 
         mInputLogic.setFacilitator(mDictionaryFacilitator);
 
@@ -1048,6 +1058,7 @@ public class LatinIME extends InputMethodService implements
     void onFinishInputViewInternal(final boolean finishingInput) {
         super.onFinishInputView(finishingInput);
         Log.i(TAG, "onFinishInputView");
+        mSmsCodePill.dismiss();
         cleanupInternalStateForFinishInput();
     }
 

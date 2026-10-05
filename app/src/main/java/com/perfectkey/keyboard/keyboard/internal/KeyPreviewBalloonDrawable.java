@@ -40,6 +40,7 @@ public final class KeyPreviewBalloonDrawable extends Drawable {
     private final int mIntrinsicWidth;
     private final float mCompactRadius;
     private final float mCompactStroke;
+    private boolean mFullyRound;
     private float mFootLeft;
     private float mFootWidth;
     private float mBoxHeight;
@@ -52,6 +53,12 @@ public final class KeyPreviewBalloonDrawable extends Drawable {
         mIntrinsicWidth = Math.round(56 * density);
         mCompactRadius = 13 * density;
         mCompactStroke = Math.max(1f, density);
+    }
+
+    /** compact bubble with fully rounded ends (a pill) instead of the key-sized corner radius */
+    public void setFullyRound(final boolean fullyRound) {
+        mFullyRound = fullyRound;
+        invalidateSelf();
     }
 
     /** all values in px; [footLeft] is relative to the left edge of this drawable */
@@ -70,7 +77,7 @@ public final class KeyPreviewBalloonDrawable extends Drawable {
         // compact bubble (single key tap): a plain rounded rectangle
         if (mFootWidth <= 0) {
             mPath.rewind();
-            final float cr = Math.min(mCompactRadius, Math.min(w, h) / 2);
+            final float cr = mFullyRound ? Math.min(w, h) / 2 : Math.min(mCompactRadius, Math.min(w, h) / 2);
             mArc.set(0, 0, w, h);
             mPath.addRoundRect(mArc, cr, cr, Path.Direction.CW);
             final int base = Settings.getValues().mColors.get(ColorType.KEY_BACKGROUND) | 0xFF000000;

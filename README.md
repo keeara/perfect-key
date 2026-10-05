@@ -16,6 +16,7 @@ It does not use the internet permission, so it is 100% offline.
 - Inline emoji search with keywords in English, Italian and Spanish
 - Strong, crisp haptic feedback (uses the vibration primitives of the phone)
 - Autocorrect and suggestions tuned for natural typing, offline dictionaries
+- Optional SMS code pill: a verification code from a new text message appears above the keyboard, tap it to type it (off by default; needs the SMS receive permission, messages are read on arrival only and nothing is stored)
 - Large, forgiving touch areas, including at the screen edges
 - Customizable layouts (see [layouts.md](layouts.md)), themes, popup keys and toolbar
 - Gesture typing (when a gesture library is installed), clipboard history, one-handed and split modes

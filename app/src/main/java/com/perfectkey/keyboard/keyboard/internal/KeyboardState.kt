@@ -64,6 +64,7 @@ class KeyboardState(private val switchActions: SwitchActions) {
     private var mode = Mode.ALPHABET
     private val prevLayouts = WeakStack(Mode.entries)
     private var isInSpaceToAlpha = false
+    private var lastCodeWasDigit = false
     private var recapitalizeMode: RecapitalizeMode? = null
 
     // For handling double tap.
@@ -177,6 +178,7 @@ class KeyboardState(private val switchActions: SwitchActions) {
         if (layout is Alphabet) shiftMode = layout.shiftMode
         recapitalizeMode = null
         isInSpaceToAlpha = false
+        lastCodeWasDigit = false
         if (layout is Alphabet && layout.shiftMode == ShiftMode.AUTOMATIC) {
             onUpdateShiftState(layout.autoCapsFlags, layout.recapitalizeMode)
         }
@@ -462,6 +464,15 @@ class KeyboardState(private val switchActions: SwitchActions) {
             } else if (Constants.isLetterCode(code) || code == KeyCode.MULTIPLE_CODE_POINTS) {
                 isInSpaceToAlpha = true
             }
+            // . , ' are followed by a letter or a space, go back to the letters right away,
+            // except . and , right after a digit (3.14, 1,000)
+            if (mode == Mode.SYMBOLS || mode == Mode.SYMBOLS_SHIFTED) {
+                val afterDigit = lastCodeWasDigit
+                lastCodeWasDigit = code in '0'.code..'9'.code
+                if (isApostrophe(code) || (!afterDigit && (code == '.'.code || code == ','.code))) {
+                    resetToAlpha(autoCapsFlags, recapitalizeMode)
+                }
+            }
         }
 
         if (Constants.isLetterCode(code)) {
@@ -522,6 +533,8 @@ class KeyboardState(private val switchActions: SwitchActions) {
     companion object {
         private val TAG = KeyboardState::class.java.simpleName
         private const val DEBUG_EVENT = false
+
+        private fun isApostrophe(c: Int) = c == '\''.code || c == '\u2019'.code
 
         private fun isSpaceOrEnter(c: Int) = c == Constants.CODE_SPACE || c == Constants.CODE_ENTER
     }

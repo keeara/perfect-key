@@ -18,7 +18,7 @@ android {
     defaultConfig {
         applicationId = "com.perfectkey.keyboard"
         minSdk = 21
-        targetSdk = 37
+        targetSdk = 36
         versionCode = 11
         versionName = "1.1"
         ndk {
