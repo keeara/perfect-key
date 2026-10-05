@@ -4,8 +4,8 @@ Perfect Key is a customizable, offline, open-source keyboard for Android with a 
 It does not use the internet permission, so it is 100% offline.
 
 <p align="center">
-  <img src="screenshots/keyboard-light.png" alt="Perfect Key, light theme" width="45%">
-  <img src="screenshots/keyboard-dark.png" alt="Perfect Key, dark theme" width="45%">
+  <img src="screenshots/keyboard-light-1.2.png" alt="Perfect Key, light theme" width="45%">
+  <img src="screenshots/keyboard-dark-1.2.png" alt="Perfect Key, dark theme" width="45%">
 </p>
 
 ## Features
